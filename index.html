@@ -12,6 +12,18 @@
     <style>
       * { font-family: 'Epilogue', sans-serif; }
 
+      html, body {
+        overflow-x: clip;
+        max-width: 100vw;
+      }
+      body {
+        position: relative;
+        overscroll-behavior-x: none;
+      }
+      #root {
+        overflow-x: clip;
+      }
+
       .dot-grid {
         background-color: #F9F8FF;
         background-image: radial-gradient(circle, #c4b5e8 1px, transparent 1px);
