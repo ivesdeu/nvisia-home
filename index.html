@@ -66,6 +66,11 @@
       .blob-glow {
         animation: blob-pulse 8s ease-in-out infinite;
       }
+
+      @keyframes askbot-dot {
+        0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+        30%            { transform: translateY(-4px); opacity: 1; }
+      }
     </style>
   </head>
   <body>

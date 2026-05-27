@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, type ReactNode } from 'react'
+import { useState, useEffect, useRef, type ReactNode, type MouseEvent } from 'react'
 import {
   ArrowRight,
   Globe,
@@ -20,6 +20,7 @@ import HeroBadge from '@/components/ui/hero-badge'
 import { Gallery4 } from '@/components/blocks/gallery4'
 import { Testimonials } from '@/components/blocks/testimonials'
 import { Blog7 } from '@/components/blocks/blog7'
+import AskBot from '@/components/blocks/ask-bot'
 
 const caseStudyItems = [
   {
@@ -80,7 +81,47 @@ function Navbar() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  const navLinks = ['What We Do', 'Case Studies', 'Insights', 'Who We Are']
+  const navLinks: { label: string; href: string }[] = [
+    { label: 'What We Do', href: '#what-we-do' },
+    { label: 'Case Studies', href: '#case-studies' },
+    { label: 'Insights', href: '#insights' },
+    { label: 'Who We Are', href: '#who-we-are' },
+  ]
+
+  const handleNavClick = (e: MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (!href.startsWith('#')) return
+    const id = href.slice(1)
+    const target = document.getElementById(id)
+    if (!target) return
+
+    e.preventDefault()
+    setMobileOpen(false)
+
+    const navOffset = 96 // sticky navbar height + breathing room
+    const startY = window.scrollY
+    const targetY = target.getBoundingClientRect().top + startY - navOffset
+    const distance = targetY - startY
+    if (Math.abs(distance) < 2) return
+
+    // Duration scales gently with distance so short hops feel snappy and
+    // long jumps still feel deliberate. Clamped 600–1100ms.
+    const duration = Math.min(1100, Math.max(600, Math.abs(distance) * 0.5))
+    const startTime = performance.now()
+
+    // easeInOutCubic — calm acceleration into and out of the motion.
+    const ease = (t: number) =>
+      t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2
+
+    const step = (now: number) => {
+      const elapsed = now - startTime
+      const t = Math.min(1, elapsed / duration)
+      window.scrollTo(0, startY + distance * ease(t))
+      if (t < 1) requestAnimationFrame(step)
+      else history.replaceState(null, '', href)
+    }
+
+    requestAnimationFrame(step)
+  }
 
   return (
     <nav
@@ -100,11 +141,12 @@ function Navbar() {
         <div className="hidden md:flex items-center gap-8 md:justify-self-center">
           {navLinks.map((link) => (
             <a
-              key={link}
-              href="#"
+              key={link.label}
+              href={link.href}
+              onClick={(e) => handleNavClick(e, link.href)}
               className="text-sm font-medium text-gray-700 hover:text-[#F15A22] transition-colors"
             >
-              {link}
+              {link.label}
             </a>
           ))}
         </div>
@@ -136,8 +178,13 @@ function Navbar() {
       {mobileOpen && (
         <div className="md:hidden bg-white border-t border-gray-100 px-6 py-4 flex flex-col gap-4">
           {navLinks.map((link) => (
-            <a key={link} href="#" className="text-sm font-medium text-gray-700">
-              {link}
+            <a
+              key={link.label}
+              href={link.href}
+              onClick={(e) => handleNavClick(e, link.href)}
+              className="text-sm font-medium text-gray-700"
+            >
+              {link.label}
             </a>
           ))}
           <a href="#" className="text-sm font-medium text-gray-600">Events</a>
@@ -472,12 +519,12 @@ function SolutionsSection() {
   ]
 
   return (
-    <section className="dot-grid py-24 px-6">
+    <section id="what-we-do" className="dot-grid py-24 px-6 scroll-mt-24">
       <div className="max-w-7xl mx-auto">
         <Reveal>
           <div className="mb-16">
             <span className="text-xs font-bold text-[#F15A22] uppercase tracking-widest">Our Solutions</span>
-            <h2 className="text-4xl md:text-5xl font-black text-[#1E1033] mt-3 leading-tight">
+            <h2 className="text-4xl md:text-5xl font-semibold text-[#1E1033] mt-3 leading-tight">
               Three ways we make{' '}
               <span className="bg-gradient-to-r from-[#6B21A8] to-[#F15A22] bg-clip-text text-transparent">
                 transformation stick
@@ -536,7 +583,7 @@ function WhyNvisiaSection() {
     },
     {
       label: '35 Years of Longevity',
-      desc: 'Scar tissue that only comes from decades of real delivery.',
+      desc: 'Three decades of shipping real systems means we know what scales — and what quietly breaks.',
       icon: Shield,
     },
     {
@@ -547,7 +594,7 @@ function WhyNvisiaSection() {
   ]
 
   return (
-    <section className="bg-[#1E1033] py-24 px-6 overflow-hidden">
+    <section id="who-we-are" className="bg-[#1E1033] py-24 px-6 overflow-hidden scroll-mt-24">
       <div className="max-w-7xl mx-auto">
         <div className="grid md:grid-cols-2 gap-16 items-center">
           {/* Left callouts */}
@@ -904,18 +951,23 @@ export default function App() {
       <ProblemSection />
       <SolutionsSection />
       <WhyNvisiaSection />
-      <Gallery4
-        eyebrow="Our Work"
-        title="Work that speaks for itself"
-        description="Selected engagements across financial services, distribution, and platform modernization. Every project is built on the same foundation: real architecture, integrated capabilities, and people who stick around."
-        items={caseStudyItems}
-      />
+      <div id="case-studies" className="scroll-mt-24">
+        <Gallery4
+          eyebrow="Our Work"
+          title="Work that speaks for itself"
+          description="Selected engagements across financial services, distribution, and platform modernization. Every project is built on the same foundation: real architecture, integrated capabilities, and people who stick around."
+          items={caseStudyItems}
+        />
+      </div>
       <Testimonials />
       <StatsBar />
       <AILabSection />
-      <Blog7 />
+      <div id="insights" className="scroll-mt-24">
+        <Blog7 />
+      </div>
       <FooterCTA />
       <Footer />
+      <AskBot />
     </div>
   )
 }

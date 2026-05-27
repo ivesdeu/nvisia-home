@@ -130,8 +130,8 @@ const Gallery4 = ({
                       className="absolute h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
                       loading="lazy"
                     />
-                    {/* Dark navy → orange brand gradient overlay */}
-                    <div className="absolute inset-0 h-full bg-gradient-to-t from-[#1E1033] via-[#1E1033]/70 to-transparent" />
+                    {/* Subtle dark overlay for text legibility */}
+                    <div className="absolute inset-0 h-full bg-gradient-to-t from-black/80 via-black/40 to-black/20" />
                     <div className="absolute inset-x-0 bottom-0 flex flex-col items-start p-6 text-white md:p-8">
                       <div className="mb-2 pt-4 text-xl md:text-2xl font-semibold leading-snug">
                         {item.title}
