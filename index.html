@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/nvisia-logo.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>nvisia — Connect. Build. Enable.</title>
+    <meta name="description" content="nvisia helps enterprises transform systems, accelerate product development, and build real AI strategies. Grounded in architecture, not hype." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <style>
+      * { font-family: 'Epilogue', sans-serif; }
+
+      .dot-grid {
+        background-color: #F9F8FF;
+        background-image: radial-gradient(circle, #c4b5e8 1px, transparent 1px);
+        background-size: 28px 28px;
+      }
+
+      @keyframes marquee {
+        from { transform: translateX(0); }
+        to   { transform: translateX(-50%); }
+      }
+      .marquee-track {
+        animation: marquee 28s linear infinite;
+      }
+
+      @keyframes gradient-shift {
+        0%   { background-position: 0% 50%; }
+        50%  { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+      .animated-border-card {
+        background: linear-gradient(135deg, #F15A22, #6B21A8, #F15A22);
+        background-size: 300% 300%;
+        animation: gradient-shift 4s ease infinite;
+        padding: 2px;
+        border-radius: 1.25rem;
+      }
+
+      @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50%       { transform: translateY(-12px); }
+      }
+      .float-card {
+        animation: float 6s ease-in-out infinite;
+      }
+
+      @keyframes blob-pulse {
+        0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.25; }
+        50%       { transform: scale(1.15) rotate(15deg); opacity: 0.35; }
+      }
+      .blob-glow {
+        animation: blob-pulse 8s ease-in-out infinite;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
